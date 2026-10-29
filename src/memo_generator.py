@@ -26,7 +26,7 @@ class PedagogicalMemoGenerator:
         lines = [
             "=" * 85,
             "              CONFIDENTIAL PEDAGOGICAL TRIAGE & RETENTION MEMORANDUM",
-            "       PREPARED BY EARLYPREDICT-LA EXPLAINABLE LEARNING ANALYTICS ENGINE",
+            "       PREPARED BY EARLYPREDICT-LA: TEMPORAL EXPLAINABILITY & TRIAGE ENGINE",
             "=" * 85,
             f"DATE OF TRIAGE REPORT : {timestamp}",
             f"TARGET ACADEMIC MODULE: {self.course_module} (Presentation: {self.term_code})",
@@ -83,3 +83,4 @@ class PedagogicalMemoGenerator:
         ])
 
         return "\n".join(lines)
+

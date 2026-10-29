@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 =====================================================================================
-       EARLYPREDICT-LA: EXPLAINABLE LEARNING ANALYTICS EARLY WARNING PIPELINE
-   Official Master Replication Pipeline Runner (Target: IJIET 2026 / Apache 2.0)
+       EARLYPREDICT-LA: TEMPORAL EXPLAINABILITY & CROSS-PRESENTATION GENERALIZATION
+    Official Master Replication Pipeline Runner (Target: IJIET 2026 / Apache 2.0)
 =====================================================================================
 
 Replication codebase for:
-"How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations"
+"How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization in Learning Analytics"
 Authors: Abdelkader Berrouachedi (aberrouachedi@ieee.org) and Bettahar Gasmia
 
 Executes all 7 core architectural phases:
@@ -48,8 +48,8 @@ from memo_generator import PedagogicalMemoGenerator
 def print_banner():
     banner = """
 =====================================================================================
-       EARLYPREDICT-LA: EXPLAINABLE LEARNING ANALYTICS EARLY WARNING PIPELINE
-    Point-in-Time Prospective Student Withdrawal Prediction & Multi-Tier Triage
+    EARLYPREDICT-LA: TEMPORAL EXPLAINABILITY & CROSS-PRESENTATION GENERALIZATION
+      Point-in-Time Prospective Student Withdrawal Prediction & Multi-Tier Triage
 =====================================================================================
 """
     print(banner)
@@ -191,3 +191,4 @@ def run_earlypredict_pipeline(data_path: Path = None):
 
 if __name__ == "__main__":
     run_earlypredict_pipeline()
+
