@@ -125,15 +125,7 @@ python main.py --figures
 
 ---
 
-## 📜 Citation & Academic Integrity
 
-If you utilize this pipeline or benchmark in your research, please cite:
-
-```bibtex
-@article{Berrouachedi_2026,
-  author    = {Abdelkader Berrouachedi and Bettahar Gasmia},
-  title     = {How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization},
-  journal   = {International Journal of Information and Education Technology},
   year      = {2026},
   note      = {Under Review}
 }
