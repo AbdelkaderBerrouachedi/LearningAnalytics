@@ -1,0 +1,29 @@
+{
+  "tier_1": {
+    "name": "Tier 1: Automated Digital Nudge",
+    "trigger_condition": "days_since_last_click > 7",
+    "cutoff_week": 4,
+    "target_budget": "Top 20%",
+    "theoretical_framework": "Zimmerman Self-Regulated Learning (SRL) & Choice Architecture (COM-B)",
+    "operational_action": "Automated empathetic email/push notification with study planning checklist and direct forum links",
+    "empirical_evidence": "Shi et al. (2024); Gatare et al. (2023)"
+  },
+  "tier_2": {
+    "name": "Tier 2: Intensive Academic Advisor Outreach",
+    "trigger_condition": "missed_tma_count >= 1",
+    "cutoff_week": "Weeks 4-6",
+    "target_budget": "Top 5%-10%",
+    "theoretical_framework": "Tinto Student Integration & Academic Momentum Theory",
+    "operational_action": "Personal advisor telephone/email outreach under 48h priority; diagnostic scaffolding, grace periods",
+    "empirical_evidence": "Rust & Motz RCT (2020); Alalawi et al. (2024)"
+  },
+  "tier_3": {
+    "name": "Tier 3: Adaptive Curricular Scaffolding",
+    "trigger_condition": "click_velocity_14d_ratio < 0.35",
+    "cutoff_week": 6,
+    "target_budget": "High-Risk Cohort",
+    "theoretical_framework": "Cognitive Load Theory (Sweller, 2011) & Instructional Design Loop Closure",
+    "operational_action": "Modular remedial concept walkthroughs, peer mentoring recommendations, and formative self-assessment quizzes",
+    "empirical_evidence": "Yamada et al. (2026); Yu (2024)"
+  }
+}

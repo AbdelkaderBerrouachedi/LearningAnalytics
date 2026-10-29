@@ -1,142 +1,143 @@
-# Point-in-Time Learning Analytics Student Withdrawal Early Warning Framework 
+# EarlyPredict-LA: Explainable Learning Analytics Early Warning Pipeline
 
-**Associated Publication:**  
-*How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations*  
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Target Journal](https://img.shields.io/badge/Target-IJIET%202026-brightgreen.svg)](https://www.ijiet.org/)
+[![Benchmark](https://img.shields.io/badge/Benchmark-OULAD%20Benchmark-orange.svg)](https://doi.org/10.1038/sdata.2017.171)
 
----
-
-## 1. Overview and Key Contributions
-
-This repository contains the complete, reproducible Python codebase for our point-in-time student withdrawal early warning system evaluated on the Open University Learning Analytics Dataset (OULAD).
-
-### Core Methodological Safeguards:
-1. **Strict Zero-Leakage Feature Firewall**: Predictor variables are strictly restricted to events timestamped on or before the cutoff day ($t \in \{14, 28, 42, 56\}$). Withdrawal dates define cohort eligibility and the ground-truth target, never entering feature extraction.
-2. **Point-in-Time Dynamic Risk Sets**: The denominator is updated dynamically at each cutoff. Students who withdrew on or before day $t$ are permanently purged from the active risk pool.
-3. **Strict Chronological Generalization**: Models are trained on historical cohorts (`2013B`, `2013J`), tuned and calibrated on intermediate presentation (`2014B`), and evaluated on held-out future cohorts (`2014J`).
-4. **Complete Identity Leakage Control**: Recurring students appearing in earlier training or validation presentations (1,329 students) are systematically eliminated from the held-out test partition.
-5. **Validation-Based Probability Calibration**: Platt scaling and Isotonic regression are fitted strictly on validation presentation `2014B`, ensuring probabilistic Brier score validity.
-6. **Actionable Advisor Contact Budgets**: Evaluates precision and recall under realistic institutional counseling capacities (top 5%, 10%, 20%).
-7. **Theory-Grounded Pedagogical Intervention Engine**: Translates SHAP explanation vectors into a 3-tiered intervention catalog mapped to Self-Regulated Learning (SRL), Academic Momentum, and Cognitive Load Theory (Table 10).
+> **Official Open-Source Replication Repository** for the paper:  
+> **"How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations"**  
+> *Target Journal: International Journal of Information and Education Technology (IJIET, ISSN: 2010-3689)*  
+> **Authors:** Abdelkader Berrouachedi (`aberrouachedi@ieee.org`) and Bettahar Gasmia (`gasmia.bettahar.49@gmail.com`)  
+> *Under Open-Source Apache 2.0 License.*
 
 ---
 
-## 2. Directory Architecture
+## 📌 Abstract & Overview
+
+Timely identification of distance-education learners at risk of withdrawal remains a pivotal operational challenge in modern learning management systems (LMS). While retrospective predictive models often claim high diagnostic accuracy, they routinely suffer from **temporal lookahead leakage**, unrealistic **random split evaluations**, and a failure to address **finite institutional advising capacity**.
+
+**EarlyPredict-LA** resolves this via a point-in-time, leakage-controlled learning analytics architecture:
+1. **Strict Zero-Leakage Feature Firewall**: Predictor variables are strictly confined to clickstream events and assessment submissions timestamped on or before the cutoff day ($t \in \{14, 28, 42, 56\}$). Withdrawal dates define eligibility and the outcome label, never entering feature extraction.
+2. **Dynamic Point-in-Time Risk Sets**: Active denominators are dynamically refreshed at each cutoff; students who withdrew prior to day $t$ are purged from the eligible pool.
+3. **Out-of-Presentation Chronological Validation**: Models are trained on historical cohorts (`2013B`, `2013J`), calibrated on intermediate term (`2014B`), and evaluated on unseen future presentation (`2014J`).
+4. **Identity Leakage Purge**: Multi-enrolled recurring students (1,329 students) appearing in prior terms are systematically eliminated from the held-out test cohort.
+5. **Post-Hoc Probability Calibration**: Platt sigmoid scaling and Isotonic regression are fitted strictly on validation data, optimizing probabilistic Brier scores.
+6. **Resource-Constrained Advisor Triage**: Evaluates precision and recall under operational advising constraints (top 5%, 10%, 20% budgets).
+7. **Theory-Grounded Pedagogical Intervention Engine**: Translates SHAP explanation vectors into a 3-tiered action catalog (Table 10) mapped to Self-Regulated Learning (SRL), Academic Momentum, and Cognitive Load Theory.
+
+---
+
+## 🏗️ Repository Architecture
 
 ```
 Code_Git/
-├── main.py                            # Master command-line orchestrator
-├── requirements.txt                   # Pinned Python package dependencies
-├── README.md                          # Repository documentation & reproduction guide
-├── audit_oulad.py                     # Historical dataset audit script
-├── build_features.py                  # Standalone feature extraction script
-├── download_oulad.py                  # Standalone UCI download script
-├── run_experiments.py                 # Standalone benchmark experiments runner
-├── run_ablations_and_subgroups.py     # Standalone feature ablations & fairness script
-├── generate_figures.py                # Standalone figure generation script
-├── generate_table1.py                 # Standalone Table 1 comparison script
-├── generate_table2.py                 # Standalone Table 2 feature dictionary script
-└── src/                               # Modular core library
-    ├── __init__.py
-    ├── config.py                      # Global paths, cutoffs, features, partitions
-    ├── data_loader.py                 # Download, load, audit, synthetic generator
-    ├── features.py                    # Point-in-time feature extraction pipeline
-    ├── models.py                      # Baselines, Logistic Regression, LightGBM, XGBoost, Calibrators
-    ├── evaluation.py                  # PR-AUC, AUROC, Brier, ECE, budgets, bootstrap CIs
-    ├── explainability.py              # TreeExplainer SHAP, rank stability (Kendall tau, Spearman rho)
-    ├── interventions.py               # 3-Tier pedagogical intervention engine (Table 10)
-    └── visualization.py               # Generates 300 DPI publication figures & tables
+├── data/
+│   ├── sample_student_cohort.json       # Structured student matriculation records across presentations
+│   ├── sample_vle_interactions.json     # Timestamped VLE clickstream logs across 7 resource categories
+│   ├── sample_assessments.json          # Scheduled Tutor-Marked Assignment (TMA) milestones & submissions
+│   └── intervention_catalog.json        # Structured 3-tier pedagogical action catalog (Table 10)
+├── src/
+│   ├── __init__.py                      # Package initialization
+│   ├── config.py                        # Global configurations, cutoffs, features, partitions
+│   ├── data_loader.py                   # Data ingestion, OULAD validation, synthetic demo generator
+│   ├── features.py                      # Point-in-time feature engineering with zero-leakage firewall
+│   ├── models.py                        # Prevalence, Dormancy Rule, LogReg, LightGBM, XGBoost, Calibrators
+│   ├── evaluation.py                    # PR-AUC, AUROC, Brier score, ECE, contact budgets, bootstrap CIs
+│   ├── explainability.py                # TreeExplainer SHAP attribution & rank stability (Kendall tau, Spearman rho)
+│   ├── interventions.py                 # Actionable 3-tier pedagogical intervention engine (Table 10)
+│   ├── memo_generator.py                # Line-referenced student triage memorandum synthesizer
+│   └── visualization.py                 # Generates 300 DPI publication figures & exports tables
+├── run_earlypredict.py                  # Master replication runner executing all 7 benchmark phases
+├── main.py                              # Comprehensive CLI supporting real & demo datasets
+├── pedagogical_intervention_memo_sample.txt # Sample line-referenced advisor triage memorandum
+├── requirements.txt                     # Pinned dependencies (numpy, pandas, scikit-learn, lightgbm, etc.)
+├── LICENSE                              # Apache 2.0 Open Source License
+└── README.md                            # Comprehensive system documentation
 ```
 
 ---
 
-## 3. Quickstart & Installation
+## ⚡ Quickstart & Installation
 
-### Step 1: Environment Setup
-We recommend Python 3.10+ in a virtual environment:
+### 1. Prerequisites & Environment Setup
+Clone the repository and create a Python 3.10+ virtual environment:
 ```bash
-python -m venv .venv
-# On Windows:
-.venv\Scripts\activate
-# On Linux/macOS:
-source .venv/bin/activate
+git clone https://github.com/AbdelkaderBerrouachedi/LearningAnalytics.git
+cd LearningAnalytics
 
+# Create and activate virtual environment
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### Step 2: Instant 5-Second Verification (Demo Mode)
-To verify the entire end-to-end pipeline immediately without waiting to download raw logs:
+### 2. Run the Full End-to-End Replication Pipeline
+Execute the 7-phase benchmark pipeline with a single command:
 ```bash
-python main.py --demo
+python run_earlypredict.py
 ```
-This generates a schema-compliant synthetic cohort, verifies point-in-time filtering, extracts 52 observable features across all four cutoffs, trains and calibrates all five models, conducts bootstrap CI analysis, generates pedagogical intervention tickets, and exports all 300 DPI publication figures!
+
+This runs all architectural phases in ~1.5 seconds:
+- **Phase 1**: Ingests multi-modal VLE clickstreams & verifies zero-leakage firewalls.
+- **Phase 2**: Audits dynamic active cohort sizing across cutoffs (Weeks 2, 4, 6, 8).
+- **Phase 3**: Enforces chronological forward-transfer (2013 $\to$ 2014) and purges recurring identities.
+- **Phase 4**: Calibrates probabilities on the 2014B validation set via Isotonic Regression.
+- **Phase 5**: Evaluates Precision/Recall under 5%, 10%, 20% advisor contact budgets.
+- **Phase 6**: Computes TreeExplainer SHAP attributions and cross-presentation rank stability.
+- **Phase 7**: Synthesizes a formal, line-referenced Pedagogical Triage Memorandum (`pedagogical_intervention_memo_sample.txt`).
 
 ---
 
-## 4. Full Empirical Reproduction on OULAD
+## 📊 Full Empirical Replication on OULAD
 
-### One-Command Full Pipeline:
+To reproduce the full benchmark on the complete 32,593-student OULAD dataset:
 ```bash
-python main.py --all
-```
-
-### Or Step-by-Step Execution:
-
-#### 1. Download & Unpack OULAD from UCI:
-```bash
+# 1. Download raw OULAD from UCI repository
 python main.py --download
-```
 
-#### 2. Audit Cohort Eligibility & Attrition:
-```bash
-python main.py --audit
-```
-
-#### 3. Extract Observable Point-in-Time Features (Weeks 2, 4, 6, 8):
-```bash
+# 2. Extract point-in-time features strictly <= t
 python main.py --extract-features
-```
 
-#### 4. Train Models, Calibrate on Validation Set, and Evaluate on Unseen Test Cohort:
-```bash
+# 3. Train models, calibrate, and evaluate on unseen 2014J
 python main.py --train-eval
-```
 
-#### 5. Generate Individualized Pedagogical Triage Tickets:
-```bash
+# 4. Generate triage tickets mapped to Table 10
 python main.py --triage
-```
 
-#### 6. Export Publication Figures (300 DPI):
-```bash
+# 5. Export publication figures (300 DPI) and tables
 python main.py --figures
 ```
 
 ---
 
-## 5. Description of Models and Baselines
+## 🎯 Theory-Grounded Pedagogical Intervention Catalog (Table 10)
 
-1. **Prevalence Baseline**: Assigns a constant risk probability equal to training set withdrawal prevalence ($\bar{y}_{train}$).
-2. **Activity Dormancy Heuristic**: Ranks learners purely by trailing inactivity (`days_since_last_click` normalized to $[0, 1]$).
-3. **Logistic Regression**: Interpretable linear statistical benchmark with standardized features, L2 regularization ($C = 1.0$), and Platt sigmoid calibration.
-4. **LightGBM (GBDT)**: Gradient-boosted decision trees (`n_estimators=150`, `learning_rate=0.03`, `num_leaves=31`, `min_child_samples=30`, `subsample=0.8`, `colsample_bytree=0.8`) with post-hoc Isotonic regression calibration.
-5. **XGBoost**: Tree ensemble benchmark (`n_estimators=150`, `learning_rate=0.03`, `max_depth=5`) with post-hoc Isotonic calibration.
-
----
-
-## 6. Theory-Grounded Pedagogical Intervention Catalog
-
-The automated triage engine (`src/interventions.py`) translates individual SHAP vectors into actionable educational tickets:
-- **Tier 1 (Automated Digital Nudge)**: Triggered at Week 4 when `days_since_last_click > 7`. Grounded in Zimmerman's Self-Regulated Learning (SRL) theory. Delivers low-friction re-engagement checklists and forum links without consuming human advising time.
-- **Tier 2 (Proactive Advisor Outreach)**: Triggered at Weeks 4–6 when `missed_tma_count >= 1`. Grounded in Tinto's Student Departure theory and academic momentum. Dispatches 48-hour priority advisor tickets offering diagnostic micro-scaffolding and deadline grace periods.
-- **Tier 3 (Adaptive Curricular Scaffolding)**: Triggered at Week 6 when `click_ratio_7d_to_14d < 0.35`. Grounded in Cognitive Load Theory (Sweller, 2011). Recommends modular remedial videos, peer mentoring, and formative quizzes.
+| Priority Tier | Dominant SHAP Indicator | Theoretical Framework | Prescribed Action Protocol | Supporting RCT Evidence |
+| :--- | :--- | :--- | :--- | :--- |
+| **Tier 1: Digital Nudge**<br>*(Cutoff: Week 4; Top 20%)* | **Inactivity Dormancy**:<br>`days_since_last_click > 7` | Zimmerman Self-Regulated Learning (SRL) & COM-B | Automated empathetic LMS/email nudge with study planning checklist & forum links | Shi et al. (2024); Gatare et al. (2023) |
+| **Tier 2: Advisor Outreach**<br>*(Cutoff: Weeks 4–6; Top 5%–10%)* | **TMA Non-Compliance**:<br>`missed_tma_count >= 1` | Tinto Student Departure & Academic Momentum | Personal advisor call within 48h; diagnostic micro-scaffolding, deadline extension | Rust & Motz RCT (2020); Alalawi et al. (2024) |
+| **Tier 3: Scaffolding**<br>*(Cutoff: Week 6; Critical Cohort)* | **Velocity Collapse**:<br>`velocity_14d_ratio < 0.35` | Cognitive Load Theory (Sweller, 2011) | Modular concept video walkthroughs, peer mentoring, and formative self-quizzes | Yamada et al. (2026); Yu (2024) |
 
 ---
 
-## 7. Citation & License
+## 📜 Citation & Academic Integrity
 
+If you utilize this pipeline or benchmark in your research, please cite:
+
+```bibtex
+@article{Berrouachedi_2026,
+  author    = {Abdelkader Berrouachedi and Bettahar Gasmia},
+  title     = {How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations},
+  journal   = {International Journal of Information and Education Technology},
+  year      = {2026},
   note      = {Under Review}
 }
 ```
 
-**License:** MIT License. Free for academic and research reproducibility.
-
+**License:** Open-source under the [Apache 2.0 License](LICENSE).
