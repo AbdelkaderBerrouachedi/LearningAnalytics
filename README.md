@@ -1,4 +1,4 @@
-# Point-in-Time Learning Analytics Student Withdrawal Early Warning Framework (Paper P6)
+# Point-in-Time Learning Analytics Student Withdrawal Early Warning Framework 
 
 **Associated Publication:**  
 *How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations*  
