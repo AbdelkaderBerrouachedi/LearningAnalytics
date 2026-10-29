@@ -2,7 +2,6 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Target Journal](https://img.shields.io/badge/Target-IJIET%202026-brightgreen.svg)](https://www.ijiet.org/)
 [![Benchmark](https://img.shields.io/badge/Benchmark-OULAD%20Benchmark-orange.svg)](https://doi.org/10.1038/sdata.2017.171)
 
 > **Official Open-Source Replication Repository** for the paper:  
@@ -130,14 +129,6 @@ python main.py --figures
 
 If you utilize this pipeline or benchmark in your research, please cite:
 
-```bibtex
-@article{Berrouachedi_2026,
-  author    = {Abdelkader Berrouachedi and Bettahar Gasmia},
-  title     = {How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations},
-  journal   = {International Journal of Information and Education Technology},
-  year      = {2026},
-  note      = {Under Review}
-}
-```
+
 
 **License:** Open-source under the [Apache 2.0 License](LICENSE).
