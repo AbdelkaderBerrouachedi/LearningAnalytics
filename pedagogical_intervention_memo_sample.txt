@@ -2,63 +2,63 @@
               CONFIDENTIAL PEDAGOGICAL TRIAGE & RETENTION MEMORANDUM
        PREPARED BY EARLYPREDICT-LA: TEMPORAL EXPLAINABILITY & TRIAGE ENGINE
 =====================================================================================
-DATE OF TRIAGE REPORT : 2026-10-29 14:26:02 UTC
+DATE OF TRIAGE REPORT : 2026-10-29 16:11:24 UTC
 TARGET ACADEMIC MODULE: OULAD STEM/Humanities Modules (Presentation: 2014J)
 PREDICTION HORIZON    : Week 4 (Day 28: First Month Milestone)
 BENCHMARK STANDARDS   : Zimmerman SRL Theory (2002), Tinto Momentum (2012), Sweller CLT (2011)
-TEST DISCRIMINATION   : PR-AUC = 0.181 | AUROC = 0.413 | Brier = 0.1150
+TEST DISCRIMINATION   : PR-AUC = 0.154 | AUROC = 0.552 | Brier = 0.1117
 -------------------------------------------------------------------------------------
 
 1. EXECUTIVE SUMMARY & ADVISOR CAPACITY ALLOCATION
    EarlyPredict-LA executed a point-in-time prospective evaluation across active course enrollments.
    Under a bounded 10% institutional advising capacity, 14 students were triaged for
-   proactive pedagogical intervention, achieving an operational precision of 21.4%.
+   proactive pedagogical intervention, achieving an operational precision of 21.3%.
    Total Active Students Monitored : 141
    Students Flagged for Immediate Action: 14 (Top 10% Risk Decile)
    Zero-Leakage Integrity Audit   : [PASSED] Zero future interactions or withdrawal dates in feature space.
-   Algorithmic Parity Check       : [PASSED] Demographic attributes excluded to prevent stereotyping.
+   Demographic Minimization Audit : [PASSED] Demographic data minimization evaluated; behavioral traces prioritized.
 
 2. ADJUDICATED HIGH-RISK STUDENT INTERVENTION TICKETS (THEORY-GROUNDED ACTION PLANS)
 
-   [CASE FILE #01] Student ID: 100043 (Module DDD-2014J)
-   - Calibrated Withdrawal Risk : 9.9% (Priority: URGENT)
+   [CASE FILE #01] Student ID: 100003 (Module DDD-2014J)
+   - Calibrated Withdrawal Risk : 9.3% (Priority: URGENT)
    - Assigned Action Tier       : General Proactive Monitoring [Urgency: Low]
    - Theoretical Grounding      : Institutional Early Warning Support
-   - Primary SHAP Driver Signal : Cumulative predicted risk 9.9%
+   - Dominant Behavioral Signal : Cumulative predicted risk 9.3%
    - Operational Action Protocol: Standard LMS dashboard alert; maintain passive monitoring.
    - Supporting Field Evidence  : Bañeres et al. (2023)
 
-   [CASE FILE #02] Student ID: 100047 (Module DDD-2014J)
-   - Calibrated Withdrawal Risk : 65.7% (Priority: URGENT)
+   [CASE FILE #02] Student ID: 100007 (Module DDD-2014J)
+   - Calibrated Withdrawal Risk : 9.3% (Priority: URGENT)
    - Assigned Action Tier       : General Proactive Monitoring [Urgency: Low]
    - Theoretical Grounding      : Institutional Early Warning Support
-   - Primary SHAP Driver Signal : Cumulative predicted risk 65.7%
+   - Dominant Behavioral Signal : Cumulative predicted risk 9.3%
    - Operational Action Protocol: Standard LMS dashboard alert; maintain passive monitoring.
    - Supporting Field Evidence  : Bañeres et al. (2023)
 
-   [CASE FILE #03] Student ID: 100063 (Module DDD-2014J)
-   - Calibrated Withdrawal Risk : 12.4% (Priority: URGENT)
+   [CASE FILE #03] Student ID: 100011 (Module DDD-2014J)
+   - Calibrated Withdrawal Risk : 9.3% (Priority: URGENT)
    - Assigned Action Tier       : General Proactive Monitoring [Urgency: Low]
    - Theoretical Grounding      : Institutional Early Warning Support
-   - Primary SHAP Driver Signal : Cumulative predicted risk 12.4%
+   - Dominant Behavioral Signal : Cumulative predicted risk 9.3%
    - Operational Action Protocol: Standard LMS dashboard alert; maintain passive monitoring.
    - Supporting Field Evidence  : Bañeres et al. (2023)
 
-   [CASE FILE #04] Student ID: 100203 (Module DDD-2014J)
-   - Calibrated Withdrawal Risk : 100.0% (Priority: URGENT)
+   [CASE FILE #04] Student ID: 100015 (Module DDD-2014J)
+   - Calibrated Withdrawal Risk : 9.3% (Priority: URGENT)
+   - Assigned Action Tier       : Tier 2: Intensive Advisor Outreach [Urgency: High (Within 48h)]
+   - Theoretical Grounding      : Tinto's Student Departure & Academic Momentum Theory
+   - Dominant Behavioral Signal : Missed 1 scheduled summative assessment(s)
+   - Operational Action Protocol: Trigger personal advisor telephone/email outreach. Conduct academic diagnosis, grant assignment grace periods if extenuating circumstances exist, and scaffold deadline milestones.
+   - Supporting Field Evidence  : Rust & Motz (2025) RCT; Alalawi et al. (2024)
+
+   [CASE FILE #05] Student ID: 100019 (Module DDD-2014J)
+   - Calibrated Withdrawal Risk : 9.3% (Priority: URGENT)
    - Assigned Action Tier       : General Proactive Monitoring [Urgency: Low]
    - Theoretical Grounding      : Institutional Early Warning Support
-   - Primary SHAP Driver Signal : Cumulative predicted risk 100.0%
+   - Dominant Behavioral Signal : Cumulative predicted risk 9.3%
    - Operational Action Protocol: Standard LMS dashboard alert; maintain passive monitoring.
    - Supporting Field Evidence  : Bañeres et al. (2023)
-
-   [CASE FILE #05] Student ID: 100219 (Module DDD-2014J)
-   - Calibrated Withdrawal Risk : 78.8% (Priority: URGENT)
-   - Assigned Action Tier       : Tier 3: Adaptive Instructional Scaffolding [Urgency: Medium (Curricular recommendation)]
-   - Theoretical Grounding      : Cognitive Load Theory (Sweller, 2011) & Instructional Design Loop Closure
-   - Primary SHAP Driver Signal : Decelerating clickstream velocity: 7d/14d ratio = 0.16 (< 0.35)
-   - Operational Action Protocol: Recommend modular remedial video walkthroughs, peer-assisted study sessions, and formative concept-check quizzes to resolve conceptual stumbling blocks.
-   - Supporting Field Evidence  : Yamada et al. (2026); Yu (2024)
 
 -------------------------------------------------------------------------------------
 3. OPERATIONAL ADVISING GUIDELINES & CLOSING-THE-LOOP MANDATE

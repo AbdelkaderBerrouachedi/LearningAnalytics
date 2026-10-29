@@ -8,14 +8,49 @@ import numpy as np
 from sklearn.metrics import average_precision_score, roc_auc_score, brier_score_loss
 
 def compute_budget_metrics(y_true: np.ndarray, y_prob: np.ndarray, budget_pct: float) -> Tuple[float, float]:
-    """Compute Precision and Recall when restricting advisor outreach to top budget_pct of students."""
+    """
+    Compute Precision and Recall when restricting advisor outreach to top budget_pct of students.
+    Handles ties deterministically via exact expected allocation to guarantee permutation invariance.
+    """
     n = len(y_true)
+    if n == 0:
+        return 0.0, 0.0
     k = max(1, int(np.floor(budget_pct * n)))
-    top_indices = np.argsort(y_prob)[::-1][:k]
-    flagged_true = y_true[top_indices]
-    precision = float(np.mean(flagged_true))
     total_positives = int(np.sum(y_true))
-    recall = float(np.sum(flagged_true) / total_positives) if total_positives > 0 else 0.0
+    if total_positives == 0:
+        return 0.0, 0.0
+
+    # Constant predictor baseline: analytical expectation under uniform selection
+    if np.ptp(y_prob) < 1e-9:
+        base_rate = float(np.mean(y_true))
+        return base_rate, float(budget_pct)
+
+    # Sort descending with stable mergesort
+    sort_idx = np.argsort(-y_prob, kind="mergesort")
+    scores_sorted = y_prob[sort_idx]
+    y_sorted = y_true[sort_idx]
+
+    threshold = scores_sorted[k - 1]
+    
+    above_mask = scores_sorted > threshold
+    tie_mask = scores_sorted == threshold
+    
+    n_above = int(np.sum(above_mask))
+    n_tie = int(np.sum(tie_mask))
+    
+    pos_above = float(np.sum(y_sorted[above_mask]))
+    pos_tie = float(np.sum(y_sorted[tie_mask]))
+    
+    k_from_tie = k - n_above
+    if n_tie > 0 and k_from_tie > 0:
+        expected_pos_from_tie = pos_tie * (k_from_tie / n_tie)
+    else:
+        expected_pos_from_tie = 0.0
+
+    expected_total_pos = pos_above + expected_pos_from_tie
+    precision = float(expected_total_pos / k)
+    recall = float(expected_total_pos / total_positives)
+
     return precision, recall
 
 def compute_ece(y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10) -> float:

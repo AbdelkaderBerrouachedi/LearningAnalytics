@@ -12,5 +12,6 @@ data/raw/
 data/processed/
 data/demo_raw/
 data/demo_processed/
+outputs/
 *.zip
 *.tar.gz

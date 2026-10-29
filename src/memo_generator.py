@@ -42,7 +42,7 @@ class PedagogicalMemoGenerator:
             f"   Total Active Students Monitored : {len(triage_tickets):,}",
             f"   Students Flagged for Immediate Action: {len(flagged_students)} (Top 10% Risk Decile)",
             f"   Zero-Leakage Integrity Audit   : [PASSED] Zero future interactions or withdrawal dates in feature space.",
-            f"   Algorithmic Parity Check       : [PASSED] Demographic attributes excluded to prevent stereotyping.",
+            f"   Demographic Minimization Audit : [PASSED] Demographic data minimization evaluated; behavioral traces prioritized.",
             "",
             "2. ADJUDICATED HIGH-RISK STUDENT INTERVENTION TICKETS (THEORY-GROUNDED ACTION PLANS)",
             ""
@@ -67,7 +67,7 @@ class PedagogicalMemoGenerator:
 
                 lines.append(f"   - Assigned Action Tier       : {tier_name} [Urgency: {urgency}]")
                 lines.append(f"   - Theoretical Grounding      : {theory}")
-                lines.append(f"   - Primary SHAP Driver Signal : {signal}")
+                lines.append(f"   - Dominant Behavioral Signal : {signal}")
                 lines.append(f"   - Operational Action Protocol: {prescribed}")
                 lines.append(f"   - Supporting Field Evidence  : {evidence}")
             lines.append("")

@@ -22,13 +22,18 @@ def extract_features_for_cutoff(
     print(f"\n[Feature Pipeline] Extracting Week {week_num} (Cutoff Day {cutoff_day})...")
     t_start = time.time()
 
-    # 1. Point-in-Time Eligible Cohort
-    # Exclude students who unregistered on or before cutoff_day
-    eligible = base_students[
-        base_students["date_unregistration"].isna() | (base_students["date_unregistration"] > cutoff_day)
-    ].copy()
+    # 1. Point-in-Time Eligible Cohort (Zero-Leakage Active Risk Set)
+    # Strictly require student to have registered on or before cutoff_day (or date missing pre-course)
+    # and not unregistered on or before cutoff_day.
+    is_registered = base_students["date_registration"].isna() | (base_students["date_registration"] <= cutoff_day)
+    is_not_unregistered = base_students["date_unregistration"].isna() | (base_students["date_unregistration"] > cutoff_day)
+    eligible = base_students[is_registered & is_not_unregistered].copy()
 
-    eligible["y_withdrawal"] = (eligible["date_unregistration"] > cutoff_day).astype(int)
+    # Outcome definition: student unregisters after cutoff_day and within presentation duration
+    is_withdrawn = (eligible["date_unregistration"] > cutoff_day)
+    if "module_presentation_length" in eligible.columns:
+        is_withdrawn = is_withdrawn & (eligible["date_unregistration"] <= eligible["module_presentation_length"])
+    eligible["y_withdrawal"] = is_withdrawn.astype(int)
     print(f"  - Active eligible students: {len(eligible):,}")
     print(f"  - Subsequent withdrawals: {eligible['y_withdrawal'].sum():,} ({eligible['y_withdrawal'].mean()*100:.2f}%)")
 
@@ -51,15 +56,15 @@ def extract_features_for_cutoff(
             pre_course_active_days=("date", "nunique")
         ).reset_index()
 
-        # Last 7 days [cutoff_day - 7, cutoff_day]
-        vle_7d = vle_cutoff[vle_cutoff["date"] >= (cutoff_day - 7)]
+        # Last 7 days [cutoff_day - 6, cutoff_day] (7 calendar days inclusive)
+        vle_7d = vle_cutoff[vle_cutoff["date"] >= (cutoff_day - 6)]
         agg_7d = vle_7d.groupby(["code_module", "code_presentation", "id_student"]).agg(
             clicks_last_7d=("sum_click", "sum"),
             active_days_last_7d=("date", "nunique")
         ).reset_index()
 
-        # Last 14 days [cutoff_day - 14, cutoff_day]
-        vle_14d = vle_cutoff[vle_cutoff["date"] >= (cutoff_day - 14)]
+        # Last 14 days [cutoff_day - 13, cutoff_day] (14 calendar days inclusive)
+        vle_14d = vle_cutoff[vle_cutoff["date"] >= (cutoff_day - 13)]
         agg_14d = vle_14d.groupby(["code_module", "code_presentation", "id_student"]).agg(
             clicks_last_14d=("sum_click", "sum"),
             active_days_last_14d=("date", "nunique")
@@ -138,6 +143,9 @@ def extract_features_for_cutoff(
         student_assessment["date_submitted"].notna() & (student_assessment["date_submitted"] <= cutoff_day)
     ].merge(due_assess[["id_assessment", "code_module", "code_presentation", "date"]], on="id_assessment", how="inner")
 
+    if "is_banked" in sub_cutoff.columns:
+        sub_cutoff = sub_cutoff[sub_cutoff["is_banked"] == 0]
+
     if not sub_cutoff.empty:
         sub_cutoff["delay"] = sub_cutoff["date_submitted"] - sub_cutoff["date"]
         sub_cutoff["is_late"] = (sub_cutoff["delay"] > 0).astype(int)
@@ -168,8 +176,14 @@ def extract_features_for_cutoff(
     )
 
     # 4. Demographic & Study Background Encodings
-    reg_median = df_feat["date_registration"].median()
-    df_feat["date_registration_imputed"] = df_feat["date_registration"].fillna(reg_median if pd.notna(reg_median) else -15)
+    # Fit registration median strictly on historical training partition to prevent test distribution leakage
+    train_mask = df_feat["code_presentation"].isin(["2013B", "2013J"])
+    if train_mask.sum() > 0:
+        reg_median = df_feat.loc[train_mask, "date_registration"].median()
+    else:
+        reg_median = df_feat["date_registration"].median()
+    reg_val = reg_median if pd.notna(reg_median) else -15.0
+    df_feat["date_registration_imputed"] = df_feat["date_registration"].fillna(reg_val)
     df_feat["gender_binary"] = (df_feat["gender"] == "M").astype(int)
     df_feat["disability_binary"] = (df_feat["disability"] == "Y").astype(int)
 
@@ -187,7 +201,9 @@ def extract_features_for_cutoff(
 
     imd_map = {
         "0-10%": 0, "10-20%": 1, "20-30%": 2, "30-40%": 3, "40-50%": 4,
-        "50-60%": 5, "60-70%": 6, "70-80%": 7, "80-90%": 8, "90-100%": 9
+        "50-60%": 5, "60-70%": 6, "70-80%": 7, "80-90%": 8, "90-100%": 9,
+        "0-10": 0, "10-20": 1, "20-30": 2, "30-40": 3, "40-50": 4,
+        "50-60": 5, "60-70": 6, "70-80": 7, "80-90": 8, "90-100": 9
     }
     df_feat["imd_band_ord"] = df_feat["imd_band"].map(imd_map).fillna(5)
 

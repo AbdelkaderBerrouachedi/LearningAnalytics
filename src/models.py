@@ -26,28 +26,35 @@ class PrevalenceBaseline:
 
 class ActivityDormancyRule:
     """
-    Heuristic baseline that flags students purely based on days of inactivity
-    (days_since_last_click), normalized to [0, 1].
+    Heuristic baseline that flags students based on dormancy and trailing 14d engagement:
+    S_i = 0.1 * days_dormant_i - ln(1 + clicks_14d_i), normalized to [0, 1] on training data.
     """
-    def __init__(self, feature_idx: int = 18):
-        self.feature_idx = feature_idx
+    def __init__(self, dormancy_idx: int = 18, clicks_14d_idx: int = 16, feature_idx: int = None):
+        self.dormancy_idx = feature_idx if feature_idx is not None else dormancy_idx
+        self.clicks_14d_idx = clicks_14d_idx
         self.min_val = 0.0
-        self.max_val = 60.0
+        self.max_val = 10.0
 
-    def fit(self, X: np.ndarray, y: np.ndarray):
-        dormancy = X[:, self.feature_idx]
-        self.min_val = float(np.percentile(dormancy, 1))
-        self.max_val = float(np.percentile(dormancy, 99))
+    def fit(self, X: np.ndarray, y: np.ndarray = None):
+        dormancy = X[:, self.dormancy_idx]
+        clicks_14d = np.maximum(0.0, X[:, self.clicks_14d_idx])
+        raw_score = 0.1 * dormancy - np.log1p(clicks_14d)
+        self.min_val = float(np.percentile(raw_score, 1))
+        self.max_val = float(np.percentile(raw_score, 99))
+        if self.max_val <= self.min_val:
+            self.max_val = self.min_val + 1.0
         return self
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
-        dormancy = X[:, self.feature_idx]
-        norm = (dormancy - self.min_val) / (self.max_val - self.min_val + 1e-5)
+        dormancy = X[:, self.dormancy_idx]
+        clicks_14d = np.maximum(0.0, X[:, self.clicks_14d_idx])
+        raw_score = 0.1 * dormancy - np.log1p(clicks_14d)
+        norm = (raw_score - self.min_val) / (self.max_val - self.min_val)
         return np.clip(norm, 0.0, 1.0)
 
 class LogisticRegressionPipeline:
     """Standardized Logistic Regression with L2 regularization."""
-    def __init__(self, C: float = 1.0, random_state: int = 42):
+    def __init__(self, C: float = 0.1, random_state: int = 42):
         self.scaler = StandardScaler()
         self.clf = LogisticRegression(C=C, max_iter=1000, random_state=random_state)
 
@@ -90,7 +97,7 @@ class XGBoostPipeline:
         params = {
             "n_estimators": 150,
             "learning_rate": 0.03,
-            "max_depth": 5,
+            "max_depth": 4,
             "subsample": 0.8,
             "colsample_bytree": 0.8,
             "random_state": random_state,

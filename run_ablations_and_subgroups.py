@@ -264,9 +264,10 @@ def run_table6_ablations_and_fairness():
     test_df['y_prob'] = prob_test
     
     # Flag top 10% overall
-    k10 = int(np.floor(0.10 * len(test_df)))
-    cutoff_thresh = np.sort(prob_test)[::-1][k10]
-    test_df['flagged_10'] = (test_df['y_prob'] >= cutoff_thresh).astype(int)
+    k10 = max(1, int(np.floor(0.10 * len(test_df))))
+    ranked_indices = np.argsort(-prob_test, kind='mergesort')
+    top_k_indices = set(ranked_indices[:k10])
+    test_df['flagged_10'] = [1 if idx in top_k_indices else 0 for idx in range(len(test_df))]
     
     subgroups = {
         'Gender: Female': test_df['gender_binary'] == 1,

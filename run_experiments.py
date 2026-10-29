@@ -47,12 +47,36 @@ def calibrate_isotonic(val_prob, y_val, test_prob):
 
 def compute_budget_metrics(y_true, y_prob, budget_pct):
     n = len(y_true)
+    if n == 0:
+        return 0.0, 0.0
     k = max(1, int(np.floor(budget_pct * n)))
-    top_indices = np.argsort(y_prob)[::-1][:k]
-    flagged_true = y_true[top_indices]
-    precision = np.mean(flagged_true)
-    total_positives = np.sum(y_true)
-    recall = np.sum(flagged_true) / total_positives if total_positives > 0 else 0.0
+    total_positives = int(np.sum(y_true))
+    if total_positives == 0:
+        return 0.0, 0.0
+
+    if np.ptp(y_prob) < 1e-9:
+        base_rate = float(np.mean(y_true))
+        return base_rate, float(budget_pct)
+
+    sort_idx = np.argsort(-y_prob, kind="mergesort")
+    scores_sorted = y_prob[sort_idx]
+    y_sorted = y_true[sort_idx]
+
+    threshold = scores_sorted[k - 1]
+    above_mask = scores_sorted > threshold
+    tie_mask = scores_sorted == threshold
+
+    n_above = int(np.sum(above_mask))
+    n_tie = int(np.sum(tie_mask))
+
+    pos_above = float(np.sum(y_sorted[above_mask]))
+    pos_tie = float(np.sum(y_sorted[tie_mask]))
+
+    k_from_tie = k - n_above
+    expected_pos_from_tie = pos_tie * (k_from_tie / n_tie) if n_tie > 0 and k_from_tie > 0 else 0.0
+    expected_total_pos = pos_above + expected_pos_from_tie
+    precision = float(expected_total_pos / k)
+    recall = float(expected_total_pos / total_positives)
     return precision, recall
 
 def evaluate_predictions(y_true, y_prob):

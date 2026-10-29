@@ -10,14 +10,30 @@ PROJECT_ROOT = CODE_DIR.parent
 DATA_DIR = CODE_DIR / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
-RESULTS_DIR = PROJECT_ROOT / "Submission_Pack"
-TABLES_DIR = RESULTS_DIR / "tables"
-FIGURES_DIR = RESULTS_DIR / "figures"
+
+# Distinct output directories to protect submission pack from being overwritten by demo runs
+OUTPUTS_DIR = CODE_DIR / "outputs"
+DEMO_OUTPUTS_DIR = OUTPUTS_DIR / "demo"
+REAL_OUTPUTS_DIR = OUTPUTS_DIR / "real"
+
+DEMO_TABLES_DIR = DEMO_OUTPUTS_DIR / "tables"
+DEMO_FIGURES_DIR = DEMO_OUTPUTS_DIR / "figures"
+REAL_TABLES_DIR = REAL_OUTPUTS_DIR / "tables"
+REAL_FIGURES_DIR = REAL_OUTPUTS_DIR / "figures"
+
+# Default run directories point to demo outputs
+TABLES_DIR = DEMO_TABLES_DIR
+FIGURES_DIR = DEMO_FIGURES_DIR
+
+# Protected submission pack directory (only updated via explicit release synchronization)
+SUBMISSION_PACK_DIR = PROJECT_ROOT / "Submission_Pack"
 
 # Ensure output directories exist
 PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
-TABLES_DIR.mkdir(parents=True, exist_ok=True)
-FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+DEMO_TABLES_DIR.mkdir(parents=True, exist_ok=True)
+DEMO_FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+REAL_TABLES_DIR.mkdir(parents=True, exist_ok=True)
+REAL_FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Prediction Cutoffs (Weeks and elapsed days from presentation start)
 CUTOFFS = {
