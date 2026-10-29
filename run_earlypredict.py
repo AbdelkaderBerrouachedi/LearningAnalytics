@@ -6,7 +6,7 @@
 =====================================================================================
 
 Replication codebase for:
-"How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization in Learning Analytics"
+"How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization"
 Authors: Abdelkader Berrouachedi (aberrouachedi@ieee.org) and Bettahar Gasmia
 
 Executes all 7 core architectural phases:

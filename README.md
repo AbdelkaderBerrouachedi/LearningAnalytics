@@ -1,11 +1,11 @@
-# EarlyPredict-LA: Temporal Explainability and Cross-Presentation Generalization in Learning Analytics
+# EarlyPredict-LA: Temporal Explainability and Cross-Presentation Generalization
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Benchmark](https://img.shields.io/badge/Benchmark-OULAD%20Benchmark-orange.svg)](https://doi.org/10.1038/sdata.2017.171)
 
 > **Official Open-Source Replication Repository** for the paper:  
-> **"How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization in Learning Analytics"**  
+> **"How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization"**  
 > *Target Journal: International Journal of Information and Education Technology (IJIET, ISSN: 2010-3689)*  
 > **Authors:** Abdelkader Berrouachedi (`aberrouachedi@ieee.org`) and Bettahar Gasmia (`gasmia.bettahar.49@gmail.com`)  
 > *Under Open-Source Apache 2.0 License.*
@@ -132,7 +132,7 @@ If you utilize this pipeline or benchmark in your research, please cite:
 ```bibtex
 @article{Berrouachedi_2026,
   author    = {Abdelkader Berrouachedi and Bettahar Gasmia},
-  title     = {How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization in Learning Analytics},
+  title     = {How Early Can We Predict Student Withdrawal? Temporal Explainability and Cross-Presentation Generalization},
   journal   = {International Journal of Information and Education Technology},
   year      = {2026},
   note      = {Under Review}
