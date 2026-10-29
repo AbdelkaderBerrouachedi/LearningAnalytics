@@ -2,8 +2,6 @@
 
 **Associated Publication:**  
 *How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations*  
-**Target Journal:** *International Journal of Information and Education Technology* (IJIET, ISSN: 2010-3689)  
-**Authors:** Abdelkader Berrouachedi (`aberrouachedi@ieee.org`) and Bettahar Gasmia (`gasmia.bettahar.49@gmail.com`)
 
 ---
 
@@ -136,14 +134,6 @@ The automated triage engine (`src/interventions.py`) translates individual SHAP 
 
 ## 7. Citation & License
 
-If you utilize this codebase or empirical benchmark, please cite:
-
-```bibtex
-@article{Berrouachedi_2026,
-  author    = {Abdelkader Berrouachedi and Bettahar Gasmia},
-  title     = {How Early Can We Predict Student Withdrawal? Explainable Analytics Across Course Presentations},
-  journal   = {International Journal of Information and Education Technology},
-  year      = {2026},
   note      = {Under Review}
 }
 ```
