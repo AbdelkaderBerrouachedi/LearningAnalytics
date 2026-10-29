@@ -1,0 +1,5 @@
+week,train_test_spearman,n_train_explained,n_test_explained,top_feature,scale
+2,0.9896574014221072,500,500,studied_credits,uncalibrated model log-odds
+4,0.9698841698841699,500,500,studied_credits,uncalibrated model log-odds
+6,0.9801801801801803,500,500,mean_submission_delay,uncalibrated model log-odds
+8,0.9873873873873874,500,500,submission_rate,uncalibrated model log-odds

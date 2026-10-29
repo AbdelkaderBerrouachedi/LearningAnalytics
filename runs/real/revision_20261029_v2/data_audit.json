@@ -1,0 +1,14 @@
+{
+  "raw_enrollments": 32593,
+  "unique_students": 28785,
+  "missing_registration": 45,
+  "withdrawn_missing_date": 93,
+  "withdrawal_after_end": 1,
+  "nonwithdrawn_with_date": 9,
+  "late_registration_by_cutoff": {
+    "14": 58,
+    "28": 16,
+    "42": 12,
+    "56": 9
+  }
+}

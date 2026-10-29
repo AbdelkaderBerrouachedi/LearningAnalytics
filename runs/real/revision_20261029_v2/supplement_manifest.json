@@ -1,0 +1,10 @@
+{
+  "n_bootstrap": 1000,
+  "seed": 42,
+  "script_sha256": "88bd93f0c543388bcae864ba223a26e6a22fa1be75476618316161bfc5bb4f51",
+  "source_manifest_sha256": "4102bbd25d3c5317a2e3d7ca3514f2dbbeff61789354e3391f18a8531a49616f",
+  "outputs": {
+    "fairness_uncertainty_week4.csv": "11d5b6d83bad892a1dc1ca793181ed814b52bc0a3ea3a720730fc6b9555841ad",
+    "common_cohort_sensitivity.csv": "6166fb949a0d0c56072060b2b16e57c7f453a044fa2e36c70f738927f02eebc7"
+  }
+}
